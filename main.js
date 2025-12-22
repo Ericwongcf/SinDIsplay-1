@@ -37,10 +37,17 @@ function init() {
     function updateParam(id, val) {
         if (id === 'amplitude') params.A = val;
         if (id === 'frequency') params.w = val;
-        if (id === 'phase') params.phi = val;
+        // 注意：这里的 val 是滑块数值，phi 以 π 为单位
+        if (id === 'phase') params.phi = val * Math.PI;
         if (id === 'offset') params.B = val;
 
-        if (displayValues[id]) displayValues[id].textContent = val.toFixed(1);
+        if (displayValues[id]) {
+            if (id === 'phase') {
+                displayValues[id].textContent = val.toFixed(1) + "π";
+            } else {
+                displayValues[id].textContent = val.toFixed(1);
+            }
+        }
 
         const observationNotes = {
             amplitude: "A (振幅)：纵向伸缩。观察波峰到 X 轴的距离如何随 A 增大而变高。",
@@ -58,7 +65,9 @@ function init() {
         sliders.phase.value = 0;
         sliders.offset.value = 0.0;
         Object.keys(displayValues).forEach(key => {
-            if (displayValues[key]) displayValues[key].textContent = sliders[key].value;
+            if (displayValues[key]) {
+                displayValues[key].textContent = key === 'phase' ? "0π" : sliders[key].value;
+            }
         });
         if (obsText) obsText.innerHTML = "调节滑块以观察波形变化...";
     }
