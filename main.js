@@ -81,15 +81,26 @@ function init() {
     }
 
     function drawAxes(width, height, centerX, centerY) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
         ctx.lineWidth = 1;
 
-        // 网格
+        // 网格线 - 水平网格保持 50px，垂直网格对齐于 π/2 单位
+        const horizontalStep = 50;
+        const verticalStep = (Math.PI / 2) * pixelsPerUnit;
+
         ctx.beginPath();
-        for (let x = centerX % 50; x < width; x += 50) {
+        // 垂直网格 (X)
+        for (let x = centerX; x < width; x += verticalStep) {
             ctx.moveTo(x, 0); ctx.lineTo(x, height);
         }
-        for (let y = centerY % 50; y < height; y += 50) {
+        for (let x = centerX - verticalStep; x > 0; x -= verticalStep) {
+            ctx.moveTo(x, 0); ctx.lineTo(x, height);
+        }
+        // 水平网格 (Y)
+        for (let y = centerY; y < height; y += horizontalStep) {
+            ctx.moveTo(0, y); ctx.lineTo(width, y);
+        }
+        for (let y = centerY - horizontalStep; y > 0; y -= horizontalStep) {
             ctx.moveTo(0, y); ctx.lineTo(width, y);
         }
         ctx.stroke();
@@ -105,14 +116,36 @@ function init() {
         // 刻度
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.font = '12px Inter, monospace';
-        for (let i = -10; i <= 20; i++) {
+        const labelStep = Math.PI / 2;
+        for (let i = -20; i <= 40; i++) {
             if (i === 0) continue;
-            const x = centerX + i * pixelsPerUnit;
+            const val = i * labelStep;
+            const x = centerX + val * pixelsPerUnit;
             if (x < 0 || x > width) continue;
+
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.beginPath();
             ctx.moveTo(x, centerY - 5); ctx.lineTo(x, centerY + 5);
             ctx.stroke();
-            ctx.fillText(i, x - 5, centerY + 20);
+
+            // 格式化标签: π/2, π, 3π/2...
+            let label = "";
+            const absI = Math.abs(i);
+            const sign = i < 0 ? "-" : "";
+
+            if (i % 2 === 0) {
+                // 偶数倍的 PI/2 即整数倍的 PI
+                const count = absI / 2;
+                label = sign + (count === 1 ? "" : count) + "π";
+            } else {
+                // 奇数倍的 PI/2
+                if (absI === 1) label = sign + "π/2";
+                else label = sign + absI + "π/2";
+            }
+
+            const metrics = ctx.measureText(label);
+            ctx.fillText(label, x - metrics.width / 2, centerY + 20);
         }
     }
 
