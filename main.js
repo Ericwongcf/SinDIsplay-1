@@ -24,6 +24,40 @@ function init() {
         offset: document.getElementById('offset')
     };
 
+    const formulaDisplay = document.getElementById('current-formula');
+
+    // 处理初次渲染
+    function updateFormulaDisplay() {
+        if (!formulaDisplay) return;
+
+        const A = params.A.toFixed(1);
+        const w = params.w.toFixed(1);
+        const B = params.B.toFixed(1);
+        // phi 已经在 params 中存为弧度，我们需要获取其 π 的倍数显示
+        const phiVal = (params.phi / Math.PI).toFixed(1);
+
+        // 构造 LaTeX 字符串
+        let latex = `y = ${A} \\sin(${w}x`;
+
+        if (phiVal > 0) latex += ` + ${phiVal}\\pi`;
+        else if (phiVal < 0) latex += ` - ${Math.abs(phiVal)}\\pi`;
+
+        latex += `)`;
+
+        if (params.B > 0) latex += ` + ${B}`;
+        else if (params.B < 0) latex += ` - ${Math.abs(B)}`;
+
+        // 使用 KaTeX 渲染
+        try {
+            katex.render(latex, formulaDisplay, {
+                throwOnError: false,
+                displayMode: true
+            });
+        } catch (err) {
+            formulaDisplay.textContent = latex;
+        }
+    }
+
     const displayValues = {
         amplitude: document.getElementById('val-amplitude'),
         frequency: document.getElementById('val-frequency'),
@@ -49,6 +83,8 @@ function init() {
             }
         }
 
+        updateFormulaDisplay();
+
         const observationNotes = {
             amplitude: "A (振幅)：纵向伸缩。观察波峰到 X 轴的距离如何随 A 增大而变高。",
             frequency: "ω (频率)：横向伸缩。ω 变大时，单位长度内出现的波峰数量会变多。",
@@ -69,6 +105,7 @@ function init() {
                 displayValues[key].textContent = key === 'phase' ? "0π" : sliders[key].value;
             }
         });
+        updateFormulaDisplay();
         if (obsText) obsText.innerHTML = "调节滑块以观察波形变化...";
     }
 
@@ -226,6 +263,7 @@ function init() {
             });
         }
     });
+    updateFormulaDisplay();
 
     if (resetBtn) resetBtn.addEventListener('click', reset);
 

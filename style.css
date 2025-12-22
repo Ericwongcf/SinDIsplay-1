@@ -37,16 +37,30 @@ header {
 
 header h1 {
     font-size: 2.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #64b5f6 0%, #2196f3 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+#formula-container {
+    margin-bottom: 2rem;
+}
+
+#current-formula {
+    font-size: 1.8rem;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
+    min-height: 2.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .subtitle {
-    color: var(--text-secondary);
     font-size: 1.1rem;
+    color: var(--text-secondary);
+    opacity: 0.8;
 }
 
 main {
@@ -190,14 +204,17 @@ input[type="range"]::-webkit-slider-thumb:hover {
     main {
         flex-direction: column;
     }
+
     .control-panel {
         width: 100%;
         order: -1;
     }
+
     .app-container {
         padding: 1rem;
         overflow-y: auto;
     }
+
     .visual-area {
         min-height: 400px;
     }
