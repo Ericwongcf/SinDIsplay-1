@@ -195,6 +195,25 @@ function init() {
         }
     }
 
+    function drawReferenceWave(width, height, centerX, centerY) {
+        ctx.save();
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = 'rgba(248, 113, 113, 0.8)'; // 更明显的红色
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+
+        for (let px = 0; px < width; px++) {
+            const x = (px - centerX) / pixelsPerUnit;
+            const valY = Math.sin(x); // 初始正弦函数 y = sin(x)
+            const py = centerY - (valY * pixelsPerUnit);
+
+            if (px === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.restore();
+    }
+
     function drawWave(width, height, centerX, centerY) {
         const offsetPixels = params.B * pixelsPerUnit;
 
@@ -252,6 +271,7 @@ function init() {
 
         ctx.clearRect(0, 0, width, height);
         drawAxes(width, height, centerX, centerY);
+        drawReferenceWave(width, height, centerX, centerY);
         drawWave(width, height, centerX, centerY);
         requestAnimationFrame(animate);
     }
