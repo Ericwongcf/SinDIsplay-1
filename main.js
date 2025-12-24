@@ -127,7 +127,7 @@ function init() {
     }
 
     function drawAxes(width, height, centerX, centerY) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.lineWidth = 1;
 
         // 网格线 - 水平网格保持 50px，垂直网格对齐于 π/2 单位
@@ -152,7 +152,7 @@ function init() {
         ctx.stroke();
 
         // 轴线
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.6)';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(0, centerY); ctx.lineTo(width, centerY);
@@ -219,7 +219,7 @@ function init() {
 
         // 中轴辅助线
         ctx.setLineDash([5, 5]);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.beginPath();
         ctx.moveTo(0, centerY - offsetPixels);
         ctx.lineTo(width, centerY - offsetPixels);
@@ -228,8 +228,8 @@ function init() {
 
         // 波形路径
         ctx.shadowBlur = 15;
-        ctx.shadowColor = '#38bdf8';
-        ctx.strokeStyle = '#38bdf8';
+        ctx.shadowColor = '#0284c7';
+        ctx.strokeStyle = '#0284c7';
         ctx.lineWidth = 4;
         ctx.beginPath();
 
@@ -252,7 +252,7 @@ function init() {
             if (peakX > 0 && peakX < width) {
                 const topY = centerY - (params.A * pixelsPerUnit + offsetPixels);
                 const baseY = centerY - offsetPixels;
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
                 ctx.beginPath();
                 ctx.moveTo(peakX, baseY); ctx.lineTo(peakX, topY);
                 ctx.stroke();
